@@ -129,10 +129,10 @@ def allowedRolesAndUsers(obj):
         allowed[r] = 1
     # shortcut roles and only index the most basic system role if the object
     # is viewable by either of those
-    if 'Anonymous' in allowed:
-        return ['Anonymous']
-    elif 'Authenticated' in allowed:
-        return ['Authenticated']
+    if allowed == ['Anonymous']:
+        return allowed
+    elif allowed == ['Authenticated']:
+        return allowed
     try:
         acl_users = getToolByName(obj, 'acl_users', None)
         if acl_users is not None:
@@ -349,9 +349,9 @@ class CatalogTool(PloneBaseTool, BaseTool):
         """Makes sure the list includes the user's groups.
         """
         result = user.getRoles()
-        if 'Anonymous' in result:
+        if result == ['Anonymous']:
             # The anonymous user has no further roles
-            return ['Anonymous']
+            return result
         result = list(result)
         if hasattr(aq_base(user), 'getGroups'):
             groups = ['user:%s' % x for x in user.getGroups()]
